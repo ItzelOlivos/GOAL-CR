@@ -1,0 +1,2 @@
+# GOAL-CR
+This project is concerned with computing channel access strategies that minimize the expected contention resolution time in single-hop random access networks. The uncertainty in the contention is addressed by modeling the problem as a partially observable stochastic game. A Reinforcement Learning method is implemented to find approximately optimal solutions. In addition, a novel algorithm was developed to compute optimal strategies in more efficient running time.
