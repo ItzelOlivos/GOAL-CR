@@ -1,12 +1,5 @@
 function [policy] = compute_policies(N, ps)
-    % Se asume sincronia de los nodos en el sentido de que todos conocen el
-    % esquema de ranuras. C?mo? Al inicio pasan por una etapa de escucha en la
-    % que aprenden c?anto duran las ranuras en el sistema y cu?ndo termin? la
-    % ?ltima. El tiempo que les toma resolver esto sigue una distribuci?n
-    % geom?trica.
-    % The geometric distribution gives the probability that the first 
-    % occurrence of success requires k independent trials, each with success probability p. 
-    % async_starts are the number of slots without activity
+    
     sigma = ceil(ps*N/100); % por ciento de N
    [dist, obj] = get_distribution(N, sigma, 0:2*N);
     
