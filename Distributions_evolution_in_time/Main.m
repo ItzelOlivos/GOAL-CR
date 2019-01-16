@@ -5,7 +5,7 @@
 
 % --------------------------- Input params -----------------------------
 % -- Size of the network, ie, number of active nodes at time slot t
-N = 50;
+N = 10;
 T = 5 * N;
 % -- Compare the performance against alternative protocols
 % -- (1) Fixed optimal probability 
@@ -48,7 +48,7 @@ EKprev_versus = N;
 % ---- Probability of successful resource acquisition at time slot t ----
 EQcurrent_greedy = 0;
 EQcurrent_versus = 0;
-fixed = ComputeConstantOptimal(N);        
+fixed = compute_FixedOptimal(N);        
 % -------------------- Begin ploting distributions ----------------------
 figure (1)
 t = 0;

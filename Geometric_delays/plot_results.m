@@ -5,7 +5,7 @@ function plot_results(Nodes, probs)
             N = Nodes(idx);
             for jdx = 1:length(probs)
                 g = probs(jdx);                
-                str = sprintf('Results/Optimal/Results_%d_%d', N, g*1000);
+                str = sprintf('PerfectInformation/Results_%d_%d', N, g*1000);
                 load(str);        
                 MOptimal(idx, jdx) = StatisticsDCF(1);
             end    
@@ -16,7 +16,7 @@ function plot_results(Nodes, probs)
             N = Nodes(idx);
             for jdx = 1:length(probs)
                 g = probs(jdx);                
-                str = sprintf('Results/Greedy/Results_%d_%d', N, g*1000);
+                str = sprintf('GOAL-CR/Results_%d_%d', N, g*1000);
                 load(str);        
                 MGreedy(idx, jdx) = StatisticsDCF(1);
             end    
@@ -32,7 +32,7 @@ function plot_results(Nodes, probs)
             N = Nodes(idx);
             for jdx = 1:length(probs)
                 g = probs(jdx);                
-                str = sprintf('Results/Fixed/Results_%d_%d', N, g*1000);
+                str = sprintf('FixedOptimalProbability/Results_%d_%d', N, g*1000);
                 load(str);        
                 MFixed(idx, jdx) = StatisticsDCF(1);
             end    
@@ -48,7 +48,7 @@ function plot_results(Nodes, probs)
             N = Nodes(idx);
             for jdx = 1:length(probs)
                 g = probs(jdx);                
-                str = sprintf('Results/Rule/Results_%d_%d', N, g*1000);
+                str = sprintf('GrowthRule/Results_%d_%d', N, g*1000);
                 load(str);        
                 MRule(idx, jdx) = StatisticsDCF(1);
             end    
@@ -58,6 +58,22 @@ function plot_results(Nodes, probs)
         for idx = 1:length(probs)
             RatioRule(:, idx) = (MRule(:, idx)-MOptimal(:, idx));
         end
+        
+        MContinuous = zeros(length(Nodes), length(probs));
+        for idx = 1:length(Nodes)    
+            N = Nodes(idx);
+            for jdx = 1:length(probs)
+                g = probs(jdx);                
+                str = sprintf('ContinuousGOAL-CR/Results_%d_%d', N, g*1000);
+                load(str);        
+                MContinuous(idx, jdx) = StatisticsDCF(1);
+            end    
+        end
+
+        RatioContinuous = zeros(length(Nodes), length(probs));
+        for idx = 1:length(probs)
+            RatioContinuous(:, idx) = (MContinuous(:, idx)-MOptimal(:, idx));
+        end
 
         
         figure
@@ -65,48 +81,56 @@ function plot_results(Nodes, probs)
         hold on
 
         idx = 1;    
-        str = sprintf('%0.2f', probs(idx));
+        str = sprintf('%0.3f', probs(idx));
         LH(1) = plot(nan, nan, '.w');
         L{1} = str;
 
         LH(2) = plot(Nodes, RatioGreedy(:, idx), '-*b');
         L{2} = '';
 
-        LH(3) = plot(Nodes, RatioRule(:, idx), '-*g');
+        LH(3) = plot(Nodes, RatioContinuous(:, idx), '-*r');
         L{3} = '';
-
-        LH(4) = plot(Nodes, RatioFixed(:, idx), '-*m');
+        
+        LH(4) = plot(Nodes, RatioRule(:, idx), '-*g');
         L{4} = '';
 
+        LH(5) = plot(Nodes, RatioFixed(:, idx), '-*m');
+        L{5} = '';
+        
         idx = 2;
-        str = sprintf('%0.2f', probs(idx));
-        LH(5) = plot(nan, nan, '.w');
-        L{5} = str;
+        str = sprintf('%0.3f', probs(idx));
+        LH(6) = plot(nan, nan, '.w');
+        L{6} = str;
 
-
-        LH(6) = plot(Nodes, RatioGreedy(:, idx), '-^b');
-        L{6} = '';
-
-        LH(7) = plot(Nodes, RatioRule(:, idx), '-^g');
+        LH(7) = plot(Nodes, RatioGreedy(:, idx), '-^b');
         L{7} = '';
 
-        LH(8) = plot(Nodes, RatioFixed(:, idx), '-^m');
+        LH(8) = plot(Nodes, RatioContinuous(:, idx), '-^r');
         L{8} = '';
+        
+        LH(9) = plot(Nodes, RatioRule(:, idx), '-^g');
+        L{9} = '';
+
+        LH(10) = plot(Nodes, RatioFixed(:, idx), '-^m');
+        L{10} = '';                
 
         idx = 3;
-        str = sprintf('%0.2f', probs(idx));
-        LH(9) = plot(nan, nan, '.w');
-        L{9} = str;
+        str = sprintf('%0.3f', probs(idx));
+        LH(11) = plot(nan, nan, '.w');
+        L{11} = str;
 
-        LH(10) = plot(Nodes, RatioGreedy(:, idx), '-+b');
-        L{10} = 'GOAL-CR';
+        LH(12) = plot(Nodes, RatioGreedy(:, idx), '-+b');
+        L{12} = 'GOAL-CR';
+        
+        LH(13) = plot(Nodes, RatioContinuous(:, idx), '-+r');
+        L{13} = 'Continuous GOAL-CR';
 
-        LH(11) = plot(Nodes, RatioRule(:, idx), '-+g');
-        L{11} = 'Growth Rule';
+        LH(14) = plot(Nodes, RatioRule(:, idx), '-+g');
+        L{14} = 'Growth rule';
 
-        LH(12) = plot(Nodes, RatioFixed(:, idx), '-+m');
-        L{12} = 'Fixed optimal probability';
-
+        LH(15) = plot(Nodes, RatioFixed(:, idx), '-+m');
+        L{15} = 'Fixed optimal probability';
+               
         legend(LH, L, 'Location','northwest','NumColumns', 3);
         hold off
 
